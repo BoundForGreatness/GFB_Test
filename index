@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GFB Food — Claim Your Gift</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<style>
+:root{--pu:#6B3FA0;--pd:#4A2870;--pl:#EEE8F8;--pm:#9B73C8;--cr:#FAF8F5;--wh:#FFFFFF;--tx:#1A1025;--tm:#6E6480;--bd:#E2D9F0;--su:#2D8A5E;--sb:#EAF5F0;--er:#C0392B;--eb:#FDEEEC;--wb:#FFF8E6;--wn:#B07D12}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cr);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:0 0 60px;color:var(--tx)}
+.hdr{width:100%;background:var(--pu);padding:22px 24px 26px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.hdr-logo{width:62px;height:62px;background:#fff;border-radius:16px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px}
+.hdr-logo img{width:100%;height:100%;object-fit:contain}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;font-weight:400}
+.hdr p{font-size:13px;color:rgba(255,255,255,.75);text-align:center;max-width:280px;line-height:1.5}
+.stp-wrap{width:100%;background:var(--pd);padding:14px 24px;display:flex;justify-content:center}
+.stp{display:flex;align-items:center;max-width:340px;width:100%}
+.si{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+.si:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:rgba(255,255,255,.2);z-index:0}
+.si.done:not(:last-child)::after{background:rgba(255,255,255,.6)}
+.sc{width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.3);color:rgba(255,255,255,.4);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;background:transparent;position:relative;z-index:1;transition:all .3s}
+.si.active .sc{background:#fff;color:var(--pu);border-color:#fff}
+.si.done .sc{background:rgba(255,255,255,.2);color:#fff;border-color:rgba(255,255,255,.6)}
+.sl{font-size:10px;color:rgba(255,255,255,.4);margin-top:5px;font-weight:500}
+.si.active .sl,.si.done .sl{color:rgba(255,255,255,.85)}
+.card{background:var(--wh);border-radius:20px;padding:26px 22px;width:calc(100% - 32px);max-width:440px;margin-top:22px;box-shadow:0 2px 18px rgba(107,63,160,.09)}
+.ct{font-size:19px;font-weight:700;color:var(--tx);margin-bottom:4px}
+.cs{font-size:13px;color:var(--tm);margin-bottom:22px;line-height:1.5}
+.pb{width:100%;height:3px;background:var(--pl);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.pf{height:100%;background:var(--pu);border-radius:2px;transition:width .4s ease}
+.fld{margin-bottom:18px}
+.fld>label{display:block;font-size:12px;font-weight:600;color:var(--tm);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px}
+.fld>label .req{color:var(--pu)}
+.fi{width:100%;display:block;padding:12px 14px;border:1.5px solid var(--bd);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--tx);background:var(--cr);outline:none;transition:border-color .2s,background .2s;appearance:none;-webkit-appearance:none}
+.fi:focus{border-color:var(--pm);background:#fff}
+.fi.err{border-color:var(--er)}
+select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236E6480' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer}
+.em{font-size:12px;color:var(--er);margin-top:6px;display:none}
+.em.show{display:block}
+/* PHONE FIX: prefix is a <span> not <input> */
+.ph-row{display:flex;gap:8px}
+.ph-pre{flex:0 0 62px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--bd);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;color:var(--pd);background:var(--pl);pointer-events:none;user-select:none}
+.ph-num{flex:1;min-width:0;padding:12px 14px;border:1.5px solid var(--bd);border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--tx);background:var(--cr);outline:none;transition:border-color .2s,background .2s;appearance:none;-webkit-appearance:none}
+.ph-num:focus{border-color:var(--pm);background:#fff}
+.ph-num.err{border-color:var(--er)}
+/* BIZ GRID: pure CSS :has() selection, no onclick */
+.bz-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.bz-opt{border:1.5px solid var(--bd);border-radius:12px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:border-color .2s,background .2s;background:var(--cr)}
+.bz-opt input[type=radio]{display:none}
+.bz-ic{font-size:22px;line-height:1}
+.bz-lb{font-size:12px;font-weight:600;color:var(--tm);text-align:center}
+.bz-opt:has(input:checked),.bz-opt.sel{border-color:var(--pu);background:var(--pl)}
+.bz-opt:has(input:checked) .bz-lb,.bz-opt.sel .bz-lb{color:var(--pd)}
+.bz-grid.ge .bz-opt:not(.sel):not(:has(input:checked)){border-color:#f5c0b8}
+/* UPLOAD */
+.upz{border:2px dashed var(--bd);border-radius:16px;padding:28px 20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--cr);position:relative}
+.upz:hover,.upz.dov{border-color:var(--pm);background:var(--pl)}
+.upz input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.up-ic{width:52px;height:52px;background:var(--pl);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;pointer-events:none}
+.up-t{font-size:15px;font-weight:600;color:var(--tx);margin-bottom:4px;pointer-events:none}
+.up-s{font-size:12px;color:var(--tm);line-height:1.5;pointer-events:none}
+.up-prev{display:none;margin-top:12px;border:1.5px solid var(--bd);border-radius:12px;overflow:hidden}
+.pim{position:relative}
+.pim img{width:100%;max-height:200px;object-fit:cover;display:block}
+.pim .rm-btn{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
+.pfc{display:none;align-items:center;gap:12px;padding:14px 16px;background:var(--cr)}
+.pf-ic{width:36px;height:36px;background:var(--pl);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px}
+.pf-info{flex:1;min-width:0}
+.pfn{font-size:13px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pfsz{font-size:11px;color:var(--tm);margin-top:2px}
+.rm-b{background:transparent;color:var(--er);border:1px solid var(--er);border-radius:8px;padding:5px 10px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
+.ai-n{background:var(--wb);border:1px solid #F0D88A;border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;margin-top:14px}
+.ai-n p{font-size:12px;color:var(--wn);line-height:1.5;font-weight:500}
+/* GIFTS */
+.gf-grid{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.gf-opt{border:1.5px solid var(--bd);border-radius:14px;padding:14px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .2s;background:var(--cr)}
+.gf-opt input[type=radio]{display:none}
+.gf-img{width:52px;height:52px;border-radius:10px;background:var(--pl);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:26px}
+.gf-info{flex:1;min-width:0}
+.gf-nm{font-size:14px;font-weight:700;color:var(--tx);margin-bottom:2px}
+.gf-ds{font-size:12px;color:var(--tm);line-height:1.4}
+.gf-bdg{font-size:10px;font-weight:700;background:var(--pu);color:#fff;padding:3px 8px;border-radius:20px;display:block;text-align:center;margin-bottom:6px;white-space:nowrap}
+.gf-ck{width:22px;height:22px;border-radius:50%;border:2px solid var(--bd);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.gf-cd{width:8px;height:8px;border-radius:50%;background:#fff;opacity:0}
+.gf-opt:has(input:checked),.gf-opt.sel{border-color:var(--pu);background:var(--pl)}
+.gf-opt:has(input:checked) .gf-ck,.gf-opt.sel .gf-ck{background:var(--pu);border-color:var(--pu)}
+.gf-opt:has(input:checked) .gf-cd,.gf-opt.sel .gf-cd{opacity:1}
+.rv-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd);gap:10px}
+.rv-row:last-child{border-bottom:none}
+.rv-k{font-size:12px;font-weight:600;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;min-width:86px;flex-shrink:0}
+.rv-v{font-size:14px;font-weight:500;color:var(--tx);text-align:right;word-break:break-word}
+.tr-row{display:flex;gap:10px;align-items:flex-start;margin-top:10px}
+.tr-row input[type=checkbox]{width:18px;height:18px;flex-shrink:0;margin-top:2px;accent-color:var(--pu);cursor:pointer}
+.tr-row p{font-size:12px;color:var(--tm);line-height:1.5}
+.tr-row a{color:var(--pu);text-decoration:none;font-weight:600}
+.btn1{width:100%;padding:15px;background:var(--pu);color:#fff;border:none;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;margin-top:20px;transition:background .2s,transform .1s}
+.btn1:hover{background:var(--pd)}
+.btn1:active{transform:scale(.98)}
+.btn2{width:100%;padding:14px;background:transparent;color:var(--pu);border:1.5px solid var(--pm);border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;margin-top:10px;transition:all .2s}
+.btn2:hover{background:var(--pl)}
+.div{height:1px;background:var(--bd);margin:18px 0}
+.su-wrap{text-align:center;padding:8px 0}
+.su-cir{width:80px;height:80px;background:var(--sb);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.su-wrap h2{font-family:'DM Serif Display',serif;font-size:26px;font-weight:400;color:var(--tx);margin-bottom:8px}
+.su-wrap>p{font-size:14px;color:var(--tm);line-height:1.6;margin-bottom:18px;max-width:300px;margin-left:auto;margin-right:auto}
+.cd{background:var(--pl);border-radius:14px;padding:14px 16px;margin-bottom:10px;text-align:left}
+.cl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--pm);margin-bottom:4px}
+.cv{font-size:14px;font-weight:600;color:var(--pd)}
+.wa-btn{width:100%;padding:15px;background:#25D366;color:#fff;border:none;border-radius:14px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;margin-top:8px}
+.wa-btn:hover{background:#1BB05A}
+.ld{text-align:center;padding:40px 0}
+.sp{width:44px;height:44px;border:3px solid var(--pl);border-top-color:var(--pu);border-radius:50%;margin:0 auto 16px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld p{font-size:14px;color:var(--tm);line-height:1.6}
+.ld strong{color:var(--pu)}
+.panel{display:none}
+.panel.on{display:block;animation:fi .28s ease}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.footer{margin-top:22px;text-align:center;font-size:11px;color:var(--tm);line-height:1.6;max-width:300px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-logo">
+    <img src="data:image/webp;base64,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" alt="GFB Food" />
+  </div>
+  <h1>Claim Your Gift</h1>
+  <p>Scan. Register. Receive — exclusive samples &amp; recipes for GFB partners</p>
+</div>
+
+<div class="stp-wrap">
+  <div class="stp">
+    <div class="si active"><div class="sc">1</div><div class="sl">Details</div></div>
+    <div class="si"><div class="sc">2</div><div class="sl">Receipt</div></div>
+    <div class="si"><div class="sc">3</div><div class="sl">Claim</div></div>
+    <div class="si"><div class="sc">✓</div><div class="sl">Done</div></div>
+  </div>
+</div>
+
+<div class="card">
+
+  <!-- STEP 1 -->
+  <div class="panel on" id="p1">
+    <div class="pb"><div class="pf" style="width:25%"></div></div>
+    <p class="ct">Your Business Details</p>
+    <p class="cs">We'll use this to send you WhatsApp updates and exclusive promotions.</p>
+
+    <div class="fld">
+      <label>Full Name <span class="req">*</span></label>
+      <input type="text" id="f-name" class="fi" placeholder="e.g. Ahmad Faizal" autocomplete="name" />
+      <p class="em" id="e-name">Please enter your name.</p>
+    </div>
+
+    <div class="fld">
+      <label>WhatsApp Number <span class="req">*</span></label>
+      <div class="ph-row">
+        <span class="ph-pre">+60</span>
+        <input type="tel" class="ph-num" id="f-phone" placeholder="12-3456789" inputmode="numeric" maxlength="14" autocomplete="tel-national" />
+      </div>
+      <p class="em" id="e-phone">Enter a valid Malaysian number (e.g. 12-3456789 or 11-12345678).</p>
+    </div>
+
+    <div class="fld">
+      <label>State <span class="req">*</span></label>
+      <select id="f-state" class="fi">
+        <option value="">Select your state…</option>
+        <option>Kuala Lumpur / Putrajaya</option><option>Selangor</option><option>Johor</option>
+        <option>Penang</option><option>Perak</option><option>Melaka</option>
+        <option>Negeri Sembilan</option><option>Pahang</option><option>Kedah / Perlis</option>
+        <option>Kelantan</option><option>Terengganu</option><option>Sabah</option>
+        <option>Sarawak</option><option>Labuan</option>
+      </select>
+      <p class="em" id="e-state">Please select your state.</p>
+    </div>
+
+    <div class="fld">
+      <label>Business Type <span class="req">*</span></label>
+      <div class="bz-grid" id="bz-grid">
+        <label class="bz-opt"><input type="radio" name="biz" value="Café / Coffee Shop"><div class="bz-ic">☕</div><div class="bz-lb">Café / Coffee Shop</div></label>
+        <label class="bz-opt"><input type="radio" name="biz" value="Restaurant"><div class="bz-ic">🍽️</div><div class="bz-lb">Restaurant</div></label>
+        <label class="bz-opt"><input type="radio" name="biz" value="Dessert / Bubble Tea"><div class="bz-ic">🧋</div><div class="bz-lb">Dessert / Bubble Tea</div></label>
+        <label class="bz-opt"><input type="radio" name="biz" value="Hotel / Bakery"><div class="bz-ic">🏨</div><div class="bz-lb">Hotel / Bakery</div></label>
+        <label class="bz-opt"><input type="radio" name="biz" value="Distributor / Wholesale"><div class="bz-ic">📦</div><div class="bz-lb">Distributor / Wholesale</div></label>
+        <label class="bz-opt"><input type="radio" name="biz" value="Other"><div class="bz-ic">🏪</div><div class="bz-lb">Other</div></label>
+      </div>
+      <p class="em" id="e-biz">Please select your business type.</p>
+    </div>
+
+    <button class="btn1" onclick="go(2)">Continue →</button>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="panel" id="p2">
+    <div class="pb"><div class="pf" style="width:50%"></div></div>
+    <p class="ct">Upload Your Receipt</p>
+    <p class="cs">Photo of your GFB product purchase receipt. The total amount must be clearly visible.</p>
+
+    <div class="upz" id="upz">
+      <input type="file" id="receipt-file" accept="image/*,application/pdf" onchange="handleFile(this)" />
+      <div class="up-ic">
+        <svg viewBox="0 0 24 24" fill="none" width="24" height="24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12" stroke="#6B3FA0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <p class="up-t">Tap to upload receipt</p>
+      <p class="up-s">Photo or PDF · Max 10MB<br>Total amount must be clearly visible</p>
+    </div>
+
+    <div class="up-prev" id="up-prev">
+      <div class="pim" id="pim" style="display:none">
+        <img id="prev-img" src="" alt="Receipt" />
+        <button class="rm-btn" onclick="removeFile()">✕ Remove</button>
+      </div>
+      <div class="pfc" id="pfc">
+        <div class="pf-ic">📄</div>
+        <div class="pf-info"><p class="pfn" id="pfn">—</p><p class="pfsz" id="pfsz">—</p></div>
+        <button class="rm-b" onclick="removeFile()">✕ Remove</button>
+      </div>
+    </div>
+
+    <p class="em" id="e-receipt" style="margin-top:10px">Please upload your receipt before continuing.</p>
+
+    <div class="ai-n">
+      <span style="font-size:16px;flex-shrink:0">🤖</span>
+      <p>Our system automatically scans each receipt's total to detect duplicates. Flagged receipts are reviewed by our team.</p>
+    </div>
+
+    <button class="btn1" onclick="go(3)">Continue →</button>
+    <button class="btn2" onclick="go(1)">← Back</button>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="panel" id="p3">
+    <div class="pb"><div class="pf" style="width:75%"></div></div>
+    <p class="ct">Choose Your Gift 🎁</p>
+    <p class="cs">Select one gift to claim. We'll WhatsApp you delivery details within 1–2 business days.</p>
+
+    <div class="gf-grid">
+      <label class="gf-opt">
+        <input type="radio" name="gift" value="Soft Serve Sample Pack" />
+        <div class="gf-img">🍦</div>
+        <div class="gf-info"><p class="gf-nm">Soft Serve Sample Pack</p><p class="gf-ds">3 × 100g trial sachets in assorted flavours — perfect for testing with customers.</p></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;flex-shrink:0;gap:6px">
+          <span class="gf-bdg">Most Popular</span>
+          <div class="gf-ck"><div class="gf-cd"></div></div>
+        </div>
+      </label>
+      <label class="gf-opt">
+        <input type="radio" name="gift" value="Recipe Booklet" />
+        <div class="gf-img">📖</div>
+        <div class="gf-info"><p class="gf-nm">Exclusive Recipe Booklet</p><p class="gf-ds">Digital + physical booklet with 12 signature GFB soft serve recipes &amp; topping ideas.</p></div>
+        <div style="flex-shrink:0"><div class="gf-ck"><div class="gf-cd"></div></div></div>
+      </label>
+      <label class="gf-opt">
+        <input type="radio" name="gift" value="Toppings Trial Kit" />
+        <div class="gf-img">🍫</div>
+        <div class="gf-info"><p class="gf-nm">Toppings Trial Kit</p><p class="gf-ds">Chocolate drizzle, rainbow sprinkles &amp; crushed biscuit crumble assorted kit.</p></div>
+        <div style="flex-shrink:0"><div class="gf-ck"><div class="gf-cd"></div></div></div>
+      </label>
+    </div>
+
+    <div class="div"></div>
+    <p style="font-size:13px;font-weight:700;color:var(--tx);margin-bottom:12px">Review your submission</p>
+    <div>
+      <div class="rv-row"><span class="rv-k">Name</span><span class="rv-v" id="rv-name">—</span></div>
+      <div class="rv-row"><span class="rv-k">Phone</span><span class="rv-v" id="rv-phone">—</span></div>
+      <div class="rv-row"><span class="rv-k">State</span><span class="rv-v" id="rv-state">—</span></div>
+      <div class="rv-row"><span class="rv-k">Business</span><span class="rv-v" id="rv-biz">—</span></div>
+      <div class="rv-row"><span class="rv-k">Receipt</span><span class="rv-v" id="rv-receipt">—</span></div>
+    </div>
+
+    <div class="tr-row">
+      <input type="checkbox" id="tc" />
+      <p>I agree to GFB Food's <a href="#">Terms &amp; Conditions</a> and consent to receiving WhatsApp promotions and product updates.</p>
+    </div>
+
+    <button class="btn1" onclick="submit()">Claim My Gift 🎁</button>
+    <button class="btn2" onclick="go(2)">← Back</button>
+  </div>
+
+  <!-- PROCESSING -->
+  <div class="panel" id="p-proc">
+    <div class="ld">
+      <div class="sp"></div>
+      <p><strong>Verifying your receipt…</strong><br><br>Our AI is scanning for duplicates and validating your submission. Just a moment.</p>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="panel" id="p-ok">
+    <div class="su-wrap">
+      <div class="su-cir">
+        <svg viewBox="0 0 36 36" fill="none" width="36" height="36"><path d="M7 18l8 8L29 10" stroke="#2D8A5E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>You're all set! 🎉</h2>
+      <p>GFB Food will contact you on WhatsApp within <strong>1–2 business days</strong> to arrange your gift delivery.</p>
+      <div class="cd"><p class="cl">Claimed Gift</p><p class="cv" id="ok-gift">—</p></div>
+      <div class="cd"><p class="cl">Reference ID</p><p class="cv" id="ok-ref">—</p></div>
+      <p style="font-size:13px;color:var(--tm);line-height:1.5;margin-bottom:14px">Save your reference ID for any enquiries.</p>
+      <button class="wa-btn" onclick="openWA()">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 1C5.03 1 1 5.03 1 10c0 1.67.45 3.24 1.24 4.59L1 19l4.54-1.22A9 9 0 0010 19c4.97 0 9-4.03 9-9s-4.03-9-9-9zm4.44 12.23c-.19.53-.94.97-1.55 1.1-.41.09-.95.16-2.76-.59-2.32-.95-3.82-3.3-3.94-3.46-.11-.16-.95-1.27-.95-2.42 0-1.15.6-1.72.82-1.95.22-.23.47-.29.63-.29l.45.01c.14 0 .33-.05.52.4l.66 1.61c.06.15.1.32.02.5l-.27.56-.42.48c-.08.08-.17.17-.07.33.1.16.44.73.95 1.18.65.58 1.2.76 1.37.85.17.09.27.07.37-.04l.49-.58c.12-.14.24-.1.39-.06l1.57.74c.16.07.26.11.3.18.03.06.03.35-.16.88z" fill="white"/></svg>
+        Chat with GFB Food on WhatsApp
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<p class="footer">Protected by GFB Food's Privacy Policy.<br>Data used only for gift fulfilment &amp; product updates.<br><br>© 2026 GFB Food Sdn. Bhd. · All rights reserved.</p>
+
+<script>
+const phoneEl = document.getElementById('f-phone');
+const hasHas = CSS.supports('selector(:has(*))');
+
+// Phone: digits only while typing
+phoneEl.addEventListener('keydown', e => {
+  const ok = ['Backspace','Delete','ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Tab','Home','End'];
+  if (!ok.includes(e.key) && !/^\d$/.test(e.key)) e.preventDefault();
+});
+phoneEl.addEventListener('input', function() {
+  this.value = this.value.replace(/[^\d\-\s]/g,'');
+  this.classList.remove('err');
+  err('e-phone', false);
+});
+// Auto-format on blur: handles 011 (10 digits stripped) and 01X (9 digits stripped)
+phoneEl.addEventListener('blur', function() {
+  let d = this.value.replace(/\D/g,'');
+  if (d.startsWith('0')) d = d.slice(1);
+  if (!d) return;
+  if (d.length >= 2 && d.startsWith('11')) {
+    this.value = d.slice(0,2) + '-' + d.slice(2,10);
+  } else if (d.length >= 2) {
+    this.value = d.slice(0,2) + '-' + d.slice(2,9);
+  }
+});
+function getDigits() {
+  return phoneEl.value.replace(/\D/g,'').replace(/^0/,'');
+}
+
+// Biz type: fallback .sel class for browsers without :has()
+document.querySelectorAll('input[name="biz"]').forEach(r => {
+  r.addEventListener('change', function() {
+    if (!hasHas) {
+      document.querySelectorAll('.bz-opt').forEach(o => o.classList.remove('sel'));
+      this.closest('.bz-opt').classList.add('sel');
+    }
+    document.getElementById('bz-grid').classList.remove('ge');
+    err('e-biz', false);
+  });
+});
+// Gift: same fallback
+document.querySelectorAll('input[name="gift"]').forEach(r => {
+  r.addEventListener('change', function() {
+    if (!hasHas) {
+      document.querySelectorAll('.gf-opt').forEach(o => o.classList.remove('sel'));
+      this.closest('.gf-opt').classList.add('sel');
+    }
+  });
+});
+
+document.getElementById('f-name').addEventListener('input', function() { this.classList.remove('err'); err('e-name',false); });
+document.getElementById('f-state').addEventListener('change', function() { this.classList.remove('err'); err('e-state',false); });
+
+function err(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('show', show);
+}
+
+function updateStepper(step) {
+  document.querySelectorAll('.si').forEach((el,i) => {
+    el.classList.remove('active','done');
+    if (i+1 < step) el.classList.add('done');
+    if (i+1 === step) el.classList.add('active');
+  });
+}
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function go(step) {
+  if (step === 2) {
+    const nm = document.getElementById('f-name');
+    const st = document.getElementById('f-state');
+    const d  = getDigits();
+    let ok = true;
+    if (!nm.value.trim())          { nm.classList.add('err'); err('e-name',true); ok=false; } else { nm.classList.remove('err'); err('e-name',false); }
+    if (d.length < 9 || d.length > 10) { phoneEl.classList.add('err'); err('e-phone',true); ok=false; } else { phoneEl.classList.remove('err'); err('e-phone',false); }
+    if (!st.value)                 { st.classList.add('err'); err('e-state',true); ok=false; } else { st.classList.remove('err'); err('e-state',false); }
+    if (!document.querySelector('input[name="biz"]:checked')) { document.getElementById('bz-grid').classList.add('ge'); err('e-biz',true); ok=false; }
+    if (!ok) return;
+  }
+  if (step === 3) {
+    const f = document.getElementById('receipt-file').files[0];
+    if (!f) { err('e-receipt',true); return; }
+    err('e-receipt',false);
+    document.getElementById('rv-name').textContent    = document.getElementById('f-name').value.trim();
+    document.getElementById('rv-phone').textContent   = '+60 ' + phoneEl.value.trim();
+    document.getElementById('rv-state').textContent   = document.getElementById('f-state').value;
+    document.getElementById('rv-biz').textContent     = document.querySelector('input[name="biz"]:checked')?.value || '—';
+    document.getElementById('rv-receipt').textContent = f.name;
+  }
+  updateStepper(step);
+  showPanel('p'+step);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function handleFile(inp) {
+  const f = inp.files[0];
+  if (!f) return;
+  err('e-receipt',false);
+  document.getElementById('up-prev').style.display = 'block';
+  if (f.type.startsWith('image/')) {
+    document.getElementById('pim').style.display = 'block';
+    document.getElementById('pfc').style.display = 'none';
+    const r = new FileReader();
+    r.onload = e => { document.getElementById('prev-img').src = e.target.result; };
+    r.readAsDataURL(f);
+  } else {
+    document.getElementById('pim').style.display = 'none';
+    document.getElementById('pfc').style.display = 'flex';
+    document.getElementById('pfn').textContent  = f.name;
+    document.getElementById('pfsz').textContent = (f.size/1024).toFixed(0)+' KB';
+  }
+}
+
+function removeFile() {
+  document.getElementById('receipt-file').value = '';
+  document.getElementById('up-prev').style.display = 'none';
+  document.getElementById('pim').style.display = 'none';
+  document.getElementById('pfc').style.display = 'none';
+}
+
+function submit() {
+  const g = document.querySelector('input[name="gift"]:checked');
+  if (!g) { alert('Please select a gift.'); return; }
+  if (!document.getElementById('tc').checked) { alert('Please accept the Terms & Conditions.'); return; }
+  showPanel('p-proc');
+  updateStepper(4);
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(() => {
+    document.getElementById('ok-gift').textContent = g.value;
+    document.getElementById('ok-ref').textContent  = 'GFB-2026-' + Math.floor(1000+Math.random()*8999);
+    showPanel('p-ok');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 2500);
+}
+
+function openWA() {
+  const ref = document.getElementById('ok-ref').textContent;
+  window.open('https://wa.me/60XXXXXXXXX?text='+encodeURIComponent('Hi GFB Food! Gift claim ref: '+ref),'_blank');
+}
+
+// Drag & drop
+const upz = document.getElementById('upz');
+upz.addEventListener('dragover',  e => { e.preventDefault(); upz.classList.add('dov'); });
+upz.addEventListener('dragleave', () => upz.classList.remove('dov'));
+upz.addEventListener('drop', e => {
+  e.preventDefault(); upz.classList.remove('dov');
+  if (e.dataTransfer.files[0]) {
+    try { document.getElementById('receipt-file').files = e.dataTransfer.files; } catch(_){}
+    handleFile({files: e.dataTransfer.files});
+  }
+});
+</script>
+</body>
+</html>
