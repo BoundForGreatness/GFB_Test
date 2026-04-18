@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#7e22ce" />
 <title>GFB Rewards — Preview</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
   tailwind.config = {
     theme: {
@@ -109,7 +110,7 @@
     <div id="step1" class="step active">
       <div class="card p-6 sm:p-8 animate-fade-in">
         <div class="flex flex-col items-center text-center mb-8">
-          <div class="inline-flex items-center justify-center rounded-2xl bg-gfb-700 text-white font-black" style="width: 64px; height: 64px; font-size: 28px;">G</div>
+          <img src="data:image/webp;base64,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" alt="GFB Food" style="width: 80px; height: 80px; object-fit: contain;" />
           <h1 class="mt-4 text-2xl sm:text-3xl font-bold text-gray-900">Start your beverage business</h1>
           <p class="mt-2 text-gray-600 text-sm">Selamat datang! Get free product recommendations + RM3 voucher</p>
         </div>
@@ -267,11 +268,11 @@
     <!-- STEP 5 — Collect data -->
     <div id="step5" class="step">
       <div class="card p-6 sm:p-8 animate-fade-in">
-        <button onclick="goToStep(4)" class="text-gray-500 hover:text-gray-700 mb-4 flex items-center gap-1 text-sm">← Back</button>
+        <button id="step5Back" onclick="backFromStep5()" class="text-gray-500 hover:text-gray-700 mb-4 flex items-center gap-1 text-sm">← Back</button>
 
         <div class="mb-6">
-          <h2 class="text-2xl font-bold text-gray-900">Almost there! 🎉</h2>
-          <p class="text-gray-600 text-sm mt-1">We'll WhatsApp your voucher + Starter Plan PDF</p>
+          <h2 class="text-2xl font-bold text-gray-900" id="step5Title">Almost there! 🎉</h2>
+          <p class="text-gray-600 text-sm mt-1" id="step5Sub">We'll WhatsApp your voucher + Starter Plan PDF</p>
         </div>
 
         <div class="space-y-4">
@@ -393,18 +394,20 @@
         </div>
 
         <div class="space-y-2.5">
-          <a href="#" class="w-full bg-gfb-700 hover:bg-gfb-800 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-gfb-700/20 flex items-center justify-center gap-2">
-            🛒 Shop online — code auto-applied
+          <button onclick="downloadPdf()" id="downloadBtn" class="w-full bg-gradient-to-r from-gfb-700 to-gfb-800 hover:from-gfb-800 hover:to-gfb-900 text-white font-semibold py-4 px-6 rounded-2xl transition-all duration-200 shadow-lg shadow-gfb-700/20 flex items-center justify-center gap-2">
+            <span id="downloadIcon">📄</span> <span id="downloadLabel">Download your guide (PDF)</span>
+          </button>
+          <a href="https://gfbfood.com.my" target="_blank" rel="noopener noreferrer" class="w-full bg-white hover:bg-gray-50 text-gfb-700 font-semibold py-4 px-6 rounded-2xl transition-all duration-200 border-2 border-gfb-200 flex items-center justify-center gap-2">
+            🛒 Shop online at GFB
           </a>
           <a href="#" class="w-full bg-white hover:bg-gray-50 text-gfb-700 font-semibold py-4 px-6 rounded-2xl transition-all duration-200 border-2 border-gfb-200 flex items-center justify-center gap-2">
             💬 Order via WhatsApp
           </a>
         </div>
 
-        <div class="mt-6 p-4 bg-gfb-50 border border-gfb-100 rounded-xl">
-          <p class="text-sm text-gfb-900 font-semibold">📩 Check your WhatsApp</p>
-          <p class="text-xs text-gfb-700 mt-1">We're sending your full Starter Kit details and menu PDF to your WhatsApp now</p>
-        </div>
+        <p id="downloadHint" class="text-xs text-gray-500 text-center mt-4">
+          Your free <span id="downloadHintType">Starter Kit</span> includes menu, cost breakdown, and daily operation guide
+        </p>
 
         <button onclick="resetDemo()" class="w-full mt-6 text-sm text-gray-500 hover:text-gray-700">🔄 Reset demo and start over</button>
       </div>
@@ -441,18 +444,24 @@ const ORDER = {
 // Starter Plans (mirrors src/data/starter-plans.ts)
 const PLANS = {
   hawker: {
+    variant: 'hawker',
+    recommendedProducts: ['passion-fruit-tea','thai-milk-tea','vanilla-soft-serve'],
     title: 'Hawker / Pasar Malam Starter', tagline: 'High volume, low cost, fast turnover',
     setup: 850, daily: 380, monthly: 9500, cups: 80,
     menu: [{name:'Passion Fruit Tea', cost:0.9, sell:5.0},{name:'Thai Milk Tea', cost:1.16, sell:5.5},{name:'Vanilla Soft Serve Cone', cost:0.95, sell:4.0}],
     sop: ['Set up at evening pasar malam (5pm onwards)','Pre-mix 2 large jugs at start (passion fruit + thai milk tea)','Keep ice bucket and cups ready within arm\'s reach','For each order: scoop, mix, shake 10 seconds, pour, serve','Aim for under 30 seconds per cup to handle peak crowds']
   },
   cafe: {
+    variant: 'cafe',
+    recommendedProducts: ['matcha-latte','lychee-tea','thai-milk-tea','vanilla-soft-serve'],
     title: 'Cafe / Premium Outlet Starter', tagline: 'Premium menu, higher margins, build a brand',
     setup: 2400, daily: 320, monthly: 8000, cups: 50,
     menu: [{name:'Matcha Latte', cost:1.3, sell:9.0},{name:'Lychee Iced Tea', cost:0.96, sell:7.5},{name:'Thai Milk Tea Premium', cost:1.16, sell:8.0},{name:'Affogato (Soft Serve + Espresso)', cost:2.0, sell:12.0}],
     sop: ['Prep station: cold brew base, syrups, milks ready by opening','Take order via POS → call out drink name to barista','Use proper glassware and garnish (mint, dried lime, etc.)','Photograph new menu items for Instagram daily','Train staff on consistency — same recipe every cup','Track best-sellers weekly, adjust menu seasonally']
   },
   home: {
+    variant: 'home',
+    recommendedProducts: ['passion-fruit-tea','vanilla-soft-serve','lychee-tea'],
     title: 'Home-Based Business Starter', tagline: 'Low investment, online orders, build slowly',
     setup: 350, daily: 90, monthly: 2200, cups: 20,
     menu: [{name:'Passion Fruit Tea (500ml)', cost:0.9, sell:6.0},{name:'Lychee Tea (500ml)', cost:0.96, sell:6.5},{name:'Vanilla Soft Serve Tub (250ml)', cost:1.2, sell:8.0}],
@@ -465,15 +474,32 @@ const PLANS = {
 // ═══════════════════════════════════════════════════════════════════════
 const state = { userType: null, location: null, biz: null, budget: null, name: '', phone: '', stateField: '' };
 
+// Business users go through 6 logical screens: 1 → 2 → 3 → 4 → 5 → 5b → 6
+// Personal users skip the discovery steps: 1 → 5 → 5b → 6 (shorter path)
 function setProgress(n){
   const bar = document.getElementById('progressBar');
   if (n === 1 || n === 6) { bar.classList.add('hidden'); return; }
   bar.classList.remove('hidden');
-  // Map logical steps (1,2,3,4,5,5.5,6) to display progress
-  const progressMap = { 1: 17, 2: 33, 3: 50, 4: 67, 5: 83, 5.5: 92, 6: 100 };
-  const pct = progressMap[n] || Math.round((n/6)*100);
-  const displayStep = n === 5.5 ? '5b' : n;
-  document.getElementById('stepLabel').textContent = `Step ${displayStep} of 6`;
+
+  // Different progress maps for each path
+  const businessMap = { 2: 33, 3: 50, 4: 67, 5: 83, 5.5: 92 };
+  const personalMap = { 5: 50, 5.5: 80 };
+  const isPersonal = state.userType === 'personal';
+  const totalScreens = isPersonal ? 3 : 6;
+  const pct = isPersonal ? (personalMap[n] || 50) : (businessMap[n] || 50);
+
+  // Label: business users see 5b, personal users see simpler step count
+  let displayStep;
+  if (isPersonal) {
+    const personalLabel = { 5: 1, 5.5: 2 };
+    displayStep = personalLabel[n] || n;
+  } else {
+    displayStep = n === 5.5 ? '5b' : n;
+  }
+
+  document.getElementById('stepLabel').textContent = isPersonal
+    ? `Step ${displayStep} of 2`
+    : `Step ${displayStep} of 6`;
   document.getElementById('stepPercent').textContent = `${pct}%`;
   document.getElementById('stepFill').style.width = `${pct}%`;
 }
@@ -487,23 +513,48 @@ function goToStep(n){
 
   if (n === 3) renderRecommendations();
   if (n === 4) renderPlan();
+  if (n === 5) updateStep5Copy();
   if (n === 5.5) {
-    // focus first OTP box
     setTimeout(() => {
       const first = document.querySelector('.otp-box');
       if (first) first.focus();
     }, 300);
   }
-  // Show demo toggle on step 5 so GFB can test both flows
+
+  // Show demo toggle only on step 5 (both paths)
   const demoToggle = document.getElementById('demoToggle');
   if (n === 5) demoToggle.classList.remove('hidden');
   else demoToggle.classList.add('hidden');
 }
 
+// Step 5 adapts copy based on whether user is business or personal
+function updateStep5Copy(){
+  const isPersonal = state.userType === 'personal';
+  const title = document.getElementById('step5Title');
+  const sub = document.getElementById('step5Sub');
+  if (isPersonal) {
+    title.textContent = 'Get your RM3 voucher 🎁';
+    sub.textContent = "Just your name and WhatsApp — we'll send it right over";
+  } else {
+    title.textContent = 'Almost there! 🎉';
+    sub.textContent = "We'll WhatsApp your voucher + Starter Plan PDF";
+  }
+}
+
+// Back button on Step 5 — different target per path
+function backFromStep5(){
+  if (state.userType === 'personal') {
+    goToStep(1); // personal users came straight from landing
+  } else {
+    goToStep(4); // business users came from starter plan
+  }
+}
+
 function selectUserType(type){
   state.userType = type;
   if (type === 'personal') {
-    alert('Demo: redirects to gfbfood.com.my');
+    // Personal users skip business questions → straight to contact form
+    goToStep(5);
     return;
   }
   goToStep(2);
@@ -708,6 +759,17 @@ function verifyOtp(){
       const voucherCode = 'GFB-' + Math.random().toString(36).slice(2, 8).toUpperCase();
       document.getElementById('voucherCode').textContent = voucherCode;
       document.getElementById('voucherGreeting').textContent = `Congrats, ${state.name.split(' ')[0]}! 🎉`;
+      // Customize download button label based on user type
+      const isPersonal = state.userType === 'personal';
+      document.getElementById('downloadLabel').textContent = isPersonal
+        ? 'Download Home Barista Guide (PDF)'
+        : 'Download your Starter Plan (PDF)';
+      document.getElementById('downloadHintType').textContent = isPersonal
+        ? 'Home Barista Guide'
+        : 'Starter Plan';
+      document.getElementById('downloadHint').innerHTML = isPersonal
+        ? 'Your guide includes 5 pro tips and 3 foolproof recipes for cafe-quality drinks at home'
+        : 'Your free <span id="downloadHintType">Starter Plan</span> includes menu, cost breakdown, and daily operation guide';
       goToStep(6);
       verifyBtn.innerHTML = 'Verify code';
     } else {
@@ -772,6 +834,338 @@ function copyCode(){
   btn.innerHTML = '✓';
   setTimeout(() => { btn.innerHTML = original; }, 2000);
 }
+
+// ═══════════════════════════════════════════════════════════════════════
+// Home Barista Guide — for "Guna sendiri" (personal) users
+// ═══════════════════════════════════════════════════════════════════════
+const HOME_GUIDE = {
+  title: 'Make Cafe-Quality Drinks at Home',
+  tagline: 'Simple recipes using GFB premix — no barista training needed',
+  tips: [
+    'Use COLD filtered water for fruit teas — tastes cleaner than tap',
+    'Shake, don\'t stir — 10 seconds of shaking makes the drink taste creamier',
+    'Ice AFTER mixing, not before — prevents dilution',
+    'Store premix in a sealed jar in the fridge once opened',
+    'For a cafe-look at home, pour slowly down a spoon over ice for layered drinks'
+  ],
+  recipes: [
+    {
+      name: 'Iced Passion Fruit Tea',
+      serves: '1 glass (500ml)',
+      ingredients: ['2 scoops GFB Passion Fruit Tea premix', '300ml cold water', '1 tbsp honey (optional)', 'Ice cubes', 'Lime wedge to garnish'],
+      steps: ['Add premix and water to a cocktail shaker', 'Add honey if you like it sweeter', 'Shake vigorously for 10 seconds', 'Fill glass with ice, pour over', 'Garnish with lime wedge']
+    },
+    {
+      name: 'Thai Milk Tea (Cafe Style)',
+      serves: '1 glass (400ml)',
+      ingredients: ['2.5 scoops GFB Thai Milk Tea premix', '200ml hot water', '100ml evaporated milk or oat milk', '2 tsp condensed milk', 'Ice cubes'],
+      steps: ['Dissolve premix in hot water, stir well', 'Let it cool for 2 minutes', 'Stir in condensed milk', 'Pour over ice', 'Slowly pour evaporated milk on top for the layered cafe look']
+    },
+    {
+      name: 'Vanilla Soft Serve Affogato',
+      serves: '1 dessert glass',
+      ingredients: ['2 scoops GFB Vanilla Soft Serve (scooped from frozen)', '1 shot hot espresso or strong coffee', 'Crushed biscuit to top'],
+      steps: ['Scoop soft serve into a chilled glass', 'Pour hot espresso directly over the ice cream', 'Top with crushed biscuit', 'Serve immediately before it melts']
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+// PDF Generation
+// ═══════════════════════════════════════════════════════════════════════
+// Helpers for drawing a branded PDF using jsPDF
+const GFB_PURPLE = [126, 34, 206];    // gfb-700
+const GFB_DARK   = [59, 7, 100];       // gfb-950
+const GREEN      = [16, 185, 129];     // emerald
+
+function drawPdfHeader(doc, title, subtitle){
+  // Purple top bar
+  doc.setFillColor(...GFB_PURPLE);
+  doc.rect(0, 0, 210, 40, 'F');
+  // Brand name
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(10);
+  doc.text('GFB FOOD · ISO 22000 CERTIFIED · HALAL', 15, 10);
+  // Title
+  doc.setFontSize(22);
+  doc.text(title, 15, 24);
+  // Subtitle
+  doc.setFontSize(10);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(233, 213, 255); // gfb-200
+  doc.text(subtitle, 15, 33);
+  // Reset for body
+  doc.setTextColor(31, 41, 55);
+  doc.setFont('helvetica', 'normal');
+}
+
+function drawPdfFooter(doc, pageNum, totalPages){
+  doc.setFontSize(8);
+  doc.setTextColor(156, 163, 175);
+  doc.text('gfbfood.com.my · Generated for ' + (state.name || 'you'), 15, 285);
+  doc.text(`Page ${pageNum} of ${totalPages}`, 175, 285);
+}
+
+function addSectionHeading(doc, y, text){
+  doc.setFillColor(243, 232, 255); // gfb-100
+  doc.rect(15, y - 5, 180, 8, 'F');
+  doc.setTextColor(...GFB_DARK);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(12);
+  doc.text(text, 18, y);
+  doc.setTextColor(31, 41, 55);
+  doc.setFont('helvetica', 'normal');
+  return y + 10;
+}
+
+// Wrap text to a max width
+function wrapLines(doc, text, maxWidth){
+  return doc.splitTextToSize(text, maxWidth);
+}
+
+// ═══ Business Starter Plan PDF ═══
+function generateStarterPlanPdf(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const plan = PLANS[pickPlanVariant(state.biz)];
+  const firstName = state.name.split(' ')[0] || 'Entrepreneur';
+
+  // PAGE 1 — Cover + Overview
+  drawPdfHeader(doc, plan.title, plan.tagline);
+
+  let y = 55;
+  doc.setFontSize(11);
+  doc.setTextColor(55, 65, 81);
+  const intro = `Dear ${firstName}, thank you for choosing GFB Food to start your beverage business. This personalised starter pack contains everything you need to launch your ${(state.biz || 'business').toLowerCase()} in ${state.stateField}: your recommended products, sample menu with pricing, profit projections, and a daily operations guide.`;
+  wrapLines(doc, intro, 180).forEach(line => { doc.text(line, 15, y); y += 5; });
+  y += 5;
+
+  // Profit highlight box
+  doc.setFillColor(...GREEN);
+  doc.roundedRect(15, y, 180, 28, 3, 3, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(9);
+  doc.text('ESTIMATED MONTHLY PROFIT', 20, y + 7);
+  doc.setFontSize(22);
+  doc.text(`RM ${plan.monthly.toLocaleString()}`, 20, y + 18);
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'normal');
+  doc.text(`~RM ${plan.daily}/day  ·  ${plan.cups} cups/day target  ·  Break even in ${Math.ceil(plan.setup / plan.daily)} days`, 20, y + 25);
+  y += 38;
+
+  // Setup cost
+  doc.setTextColor(31, 41, 55);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Starting Investment', 15, y);
+  y += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(10);
+  doc.text(`Estimated setup cost: RM ${plan.setup.toLocaleString()}`, 15, y);
+  y += 5;
+  doc.text(`This typically covers: equipment, first stock order, licensing fees, and basic branding materials.`, 15, y);
+  y += 12;
+
+  // Recommended products
+  y = addSectionHeading(doc, y, 'Recommended Products');
+  doc.setFontSize(10);
+  plan.recommendedProducts.forEach(pid => {
+    const p = PRODUCTS[pid];
+    if (!p) return;
+    doc.setFont('helvetica', 'bold');
+    doc.text(`${p.emoji}  ${p.name}`, 18, y); y += 5;
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(75, 85, 99);
+    wrapLines(doc, p.desc, 175).forEach(line => { doc.text(line, 18, y); y += 4; });
+    doc.text(`Cost per cup: RM${p.cost.toFixed(2)}   ·   Suggested sell: RM${p.sell.toFixed(2)}   ·   Margin: ${Math.round(((p.sell-p.cost)/p.sell)*100)}%`, 18, y);
+    doc.setTextColor(31, 41, 55);
+    y += 8;
+  });
+
+  // PAGE 2 — Menu + SOP
+  doc.addPage();
+  drawPdfHeader(doc, 'Sample Menu & Operations', 'Your daily playbook');
+  y = 55;
+
+  y = addSectionHeading(doc, y, 'Sample Menu with Pricing');
+  doc.setFontSize(10);
+  // Table header
+  doc.setFillColor(243, 244, 246);
+  doc.rect(15, y - 3, 180, 7, 'F');
+  doc.setFont('helvetica', 'bold');
+  doc.text('Item', 18, y + 2);
+  doc.text('Cost', 120, y + 2);
+  doc.text('Sell', 145, y + 2);
+  doc.text('Profit', 170, y + 2);
+  y += 10;
+  doc.setFont('helvetica', 'normal');
+  plan.menu.forEach(item => {
+    const profit = item.sell - item.cost;
+    doc.text(item.name, 18, y);
+    doc.text(`RM${item.cost.toFixed(2)}`, 120, y);
+    doc.text(`RM${item.sell.toFixed(2)}`, 145, y);
+    doc.setTextColor(...GREEN);
+    doc.text(`RM${profit.toFixed(2)}`, 170, y);
+    doc.setTextColor(31, 41, 55);
+    y += 6;
+  });
+  y += 8;
+
+  y = addSectionHeading(doc, y, 'Daily Operations SOP');
+  doc.setFontSize(10);
+  plan.sop.forEach((step, i) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...GFB_PURPLE);
+    doc.text(`${i + 1}.`, 18, y);
+    doc.setTextColor(31, 41, 55);
+    doc.setFont('helvetica', 'normal');
+    wrapLines(doc, step, 170).forEach((line, li) => {
+      doc.text(line, 25, y + (li * 5));
+    });
+    y += 5 * Math.max(1, wrapLines(doc, step, 170).length) + 2;
+  });
+  y += 5;
+
+  // Next steps box
+  doc.setFillColor(254, 243, 199); // amber-100
+  doc.roundedRect(15, y, 180, 30, 3, 3, 'F');
+  doc.setTextColor(120, 53, 15);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Your Next Steps', 20, y + 8);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text('1. Use your RM3 voucher when placing your first order at gfbfood.com.my', 20, y + 16);
+  doc.text(`2. Start with the ${plan.recommendedProducts.length} recommended products in this guide`, 20, y + 22);
+  doc.text('3. Message us on WhatsApp for bulk pricing and trade account setup', 20, y + 28);
+
+  drawPdfFooter(doc, 1, 2);
+  doc.setPage(1);
+  drawPdfFooter(doc, 1, 2);
+  doc.setPage(2);
+  drawPdfFooter(doc, 2, 2);
+
+  doc.save(`GFB_Starter_Plan_${plan.variant}_${firstName}.pdf`);
+}
+
+// ═══ Home Barista Guide PDF (personal users) ═══
+function generateHomeGuidePdf(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF('p', 'mm', 'a4');
+  const firstName = state.name.split(' ')[0] || 'Friend';
+
+  drawPdfHeader(doc, HOME_GUIDE.title, HOME_GUIDE.tagline);
+
+  let y = 55;
+  doc.setFontSize(11);
+  doc.setTextColor(55, 65, 81);
+  const intro = `Hi ${firstName}, welcome to the GFB family. This little guide shows you how to turn our premix pouches into cafe-quality drinks at home. Five quick tips, three foolproof recipes, zero barista training needed.`;
+  wrapLines(doc, intro, 180).forEach(line => { doc.text(line, 15, y); y += 5; });
+  y += 8;
+
+  // Pro tips
+  y = addSectionHeading(doc, y, 'Five Pro Tips');
+  doc.setFontSize(10);
+  HOME_GUIDE.tips.forEach((tip, i) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(...GFB_PURPLE);
+    doc.text(`${i + 1}.`, 18, y);
+    doc.setTextColor(31, 41, 55);
+    doc.setFont('helvetica', 'normal');
+    const lines = wrapLines(doc, tip, 170);
+    lines.forEach((line, li) => { doc.text(line, 25, y + (li * 5)); });
+    y += 5 * lines.length + 2;
+  });
+  y += 5;
+
+  // Recipes (may spill to page 2)
+  HOME_GUIDE.recipes.forEach((recipe, idx) => {
+    if (y > 230) { doc.addPage(); drawPdfHeader(doc, HOME_GUIDE.title, HOME_GUIDE.tagline); y = 55; }
+
+    y = addSectionHeading(doc, y, `Recipe ${idx + 1}: ${recipe.name}`);
+    doc.setFontSize(9);
+    doc.setTextColor(107, 114, 128);
+    doc.text(`Makes ${recipe.serves}`, 18, y);
+    doc.setTextColor(31, 41, 55);
+    y += 6;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Ingredients', 18, y); y += 5;
+    doc.setFont('helvetica', 'normal');
+    recipe.ingredients.forEach(ing => {
+      doc.text(`• ${ing}`, 20, y); y += 5;
+    });
+    y += 3;
+
+    doc.setFont('helvetica', 'bold');
+    doc.text('Method', 18, y); y += 5;
+    doc.setFont('helvetica', 'normal');
+    recipe.steps.forEach((step, si) => {
+      const lines = wrapLines(doc, `${si + 1}. ${step}`, 175);
+      lines.forEach((line, li) => { doc.text(line, 20, y + (li * 5)); });
+      y += 5 * lines.length + 1;
+    });
+    y += 8;
+  });
+
+  // Voucher reminder
+  if (y > 240) { doc.addPage(); y = 30; }
+  doc.setFillColor(243, 232, 255);
+  doc.roundedRect(15, y, 180, 22, 3, 3, 'F');
+  doc.setTextColor(...GFB_DARK);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('Remember your RM3 voucher!', 20, y + 8);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.text('Use your code at gfbfood.com.my before it expires.', 20, y + 15);
+  doc.text('Our most popular products for home use: Passion Fruit Tea, Thai Milk Tea, Vanilla Soft Serve.', 20, y + 20);
+
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    drawPdfFooter(doc, i, totalPages);
+  }
+
+  doc.save(`GFB_Home_Barista_Guide_${firstName}.pdf`);
+}
+
+function downloadPdf(){
+  const btn = document.getElementById('downloadBtn');
+  const icon = document.getElementById('downloadIcon');
+  const label = document.getElementById('downloadLabel');
+  const originalIcon = icon.innerHTML;
+  const originalLabel = label.innerHTML;
+
+  icon.innerHTML = '⏳';
+  label.innerHTML = 'Generating PDF...';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    try {
+      if (state.userType === 'personal') {
+        generateHomeGuidePdf();
+      } else {
+        generateStarterPlanPdf();
+      }
+      icon.innerHTML = '✅';
+      label.innerHTML = 'Downloaded! Tap to download again';
+      setTimeout(() => {
+        icon.innerHTML = originalIcon;
+        label.innerHTML = originalLabel;
+      }, 3000);
+    } catch (e) {
+      console.error(e);
+      icon.innerHTML = '❌';
+      label.innerHTML = 'Something went wrong — try again';
+    }
+    btn.disabled = false;
+  }, 400);
+}
+
 
 function resetDemo(){
   Object.keys(state).forEach(k => state[k] = typeof state[k] === 'string' ? '' : null);
